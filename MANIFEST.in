@@ -1,5 +1,5 @@
 prune dist
 prune build
-recursive-include pyccuracy *.template
-recursive-include pyccuracy *.txt
-recursive-include pyccuracy *.xslt
+recursive-include extasy *.template
+recursive-include extasy *.txt
+recursive-include extasy *.xslt

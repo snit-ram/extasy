@@ -1,42 +1,40 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+#
+# Copyright (C) 2010 Rafael Marques Martins <snit.ram@gmail.com>
+#
+# This software is based in Pyccuracy (www.pyccuracy.org), wich is also
+# licensed under Open Software License ("OSL") v. 3.0 (the "License")
+#
 # Licensed under the Open Software License ("OSL") v. 3.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-
+#
 #     http://www.opensource.org/licenses/osl-3.0.php
-
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-from setuptools import setup
-from pyccuracy import Version
 
-def find_packages():
-    ''' Pyccuracy`s own find_packages is being used to avoid setuptools` 
-        find_package - which contains a monkey patch that may cause crashes 
-        when installing in some operating systems.'''
-    modules = []
-    pycc_path = os.path.dirname(os.path.abspath(__file__)) + '/pyccuracy'
-    for root, dirs, files in os.walk(pycc_path):
-        modules.append(root.replace(pycc_path, 'pyccuracy').replace('/', '.'))
-    return modules
+from setuptools import setup, find_packages
+from extasy import Version
+
+#classifier should be changed to "Development Status :: 5 - Production/Stable" soon
 
 setup(
-    name = 'Pyccuracy',
+    name = 'EXTasy',
     version = Version,
-    description = "Pyccuracy is a BDD style Acceptance Testing framework",
-    long_description = """Pyccuracy is a Behavior-Driven Acceptance Testing framework (more on http://www.pyccuracy.org).""",
+    description = "EXTasy is a BDD style Acceptance Testing framework based on Pyccuracy for ExtJS interfaces",
+    long_description = """EXTasy is a Behavior-Driven Acceptance Testing framework based on Pyccuracy for ExtJS interfaces""",
     keywords = 'Acceptance Testing Accuracy Behavior Driven Development',
-    author = 'Pyccuracy team',
-    author_email = 'pyccuracy@googlegroups.com',
-    url = 'http://www.pyccuracy.org',
+    author = 'EXTasy team',
+    author_email = 'snit.ram@gmail.com',
+    url = '',
     license = 'OSI',
-    classifiers = ['Development Status :: 5 - Production/Stable',
+    classifiers = ['Development Status :: 4 - Beta',
                    'Intended Audience :: Developers',
                    'License :: OSI Approved',
                    'Natural Language :: English',
@@ -49,12 +47,12 @@ setup(
                    'Topic :: Software Development :: Quality Assurance',
                    'Topic :: Software Development :: Testing',],
     packages = find_packages(),
-    package_dir = {"pyccuracy": "pyccuracy"},
+    package_dir = {"extasy": "extasy"},
     include_package_data = True,
     package_data = {
         '': ['*.template'],
-        'pyccuracy.languages.data': ['*.txt'],
-        'pyccuracy.xslt': ['*.xslt'],
+        'extasy.languages.data': ['*.txt'],
+        'extasy.xslt': ['*.xslt'],
     },
 
     install_requires=[
@@ -63,8 +61,8 @@ setup(
 
     entry_points = {
         'console_scripts': [
-            'pyccuracy_console = pyccuracy.pyccuracy_console:console',
-            'pyccuracy_help = pyccuracy.pyccuracy_help:console',
+            'extasy_console = extasy.extasy_console:console',
+            'extasy_help = extasy.extasy_help:console',
         ],
     },
 

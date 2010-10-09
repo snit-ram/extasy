@@ -1,0 +1,23 @@
+Metadata-Version: 1.0
+Name: EXTasy
+Version: 1.2.45
+Summary: EXTasy is a BDD style Acceptance Testing framework
+Home-page: http://www.extasy.org
+Author: EXTasy team
+Author-email: extasy@googlegroups.com
+License: OSI
+Description: EXTasy is a Behavior-Driven Acceptance Testing framework (more on http://www.extasy.org).
+Keywords: Acceptance Testing Accuracy Behavior Driven Development
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved
+Classifier: Natural Language :: English
+Classifier: Natural Language :: Portuguese (Brazilian)
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 2.5
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Software Development :: Testing
