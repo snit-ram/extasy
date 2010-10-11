@@ -104,10 +104,23 @@ class SeleniumElementSelector(object):
             line_accessor = 'position()=%s' % grid_line
             
         if element_name:
-            return r"xpath=((%%(xpath)s//span[contains(concat(' ',@class, ' '),' x-panel-header-text ') and .='%s']/ancestor::div[contains(concat(' ',@class, ' '),' x-grid-panel ')])[last()])/descendant::div[contains(concat(' ',@class, ' '),' x-grid3-row ')][%s]" % ( element_name, line_accessor )
+            return r"xpath=((%%(xpath)s//span[contains(concat(' ',@class, ' '),' x-panel-header-text ') and .='%s']/ancestor::div[contains(concat(' ',@class, ' '),' x-grid-panel ')])[last()])/descendant::div[contains(concat(' ',@class, ' '),' x-grid3-row ')][%s]//div[@class=contains( concat( ' ', @class, ' '), ' x-grid3-cell-inner ') ][1]" % ( element_name, line_accessor )
 
-        return r"xpath=((%%(xpath)s//div[contains(concat(' ',@class, ' '),' x-grid-panel ')])[last()])/descendant::div[contains(concat(' ',@class, ' '),' x-grid3-row ')][%s]" % line_accessor
+        return r"xpath=((%%(xpath)s//div[contains(concat(' ',@class, ' '),' x-grid-panel ')])[last()])/descendant::div[contains(concat(' ',@class, ' '),' x-grid3-row ')][%s]//div[@class=contains( concat( ' ', @class, ' '), ' x-grid3-cell-inner ') ][1]" % line_accessor
         
+    
+    @staticmethod
+    def gridLines( element_name ):
+        '''
+        Returns an xpath that matches lines for ext grid with
+        the specified title.
+        '''
+
+        if element_name:
+            return r"xpath=((%%(xpath)s//span[contains(concat(' ',@class, ' '),' x-panel-header-text ') and .='%s']/ancestor::div[contains(concat(' ',@class, ' '),' x-grid-panel ')])[last()])/descendant::div[contains(concat(' ',@class, ' '),' x-grid3-row ')]" % ( element_name )
+
+        return r"xpath=((%(xpath)s//div[contains(concat(' ',@class, ' '),' x-grid-panel ')])[last()])/descendant::div[contains(concat(' ',@class, ' '),' x-grid3-row ')]"
+
         
 
     @staticmethod
@@ -143,7 +156,24 @@ class SeleniumElementSelector(object):
         '''
         Returns an xpath that matches id of given combobox.
         '''
-        return r"(%%(xpath)s//img[contains(concat(' ',@class, ' '),' x-form-arrow-trigger ')]/ancestor::div[contains(concat(' ',@class, ' '),' x-form-item ')]/descendant::label[contains(concat(' ',@class, ' '),' x-form-item-label ') and .='%s'])[last()]/ancestor::div[contains(concat(' ',@class, ' '),' x-form-item ')]/descendant::input[contains(concat(' ',@class, ' '),' x-form-field ')]" % (element_name)
+        return r"xpath=(%%(xpath)s//img[contains(concat(' ',@class, ' '),' x-form-arrow-trigger ')]/ancestor::div[contains(concat(' ',@class, ' '),' x-form-item ')]/descendant::label[contains(concat(' ',@class, ' '),' x-form-item-label ') and .='%s'])[last()]/ancestor::div[contains(concat(' ',@class, ' '),' x-form-item ')]/descendant::input[contains(concat(' ',@class, ' '),' x-form-field ')]" % (element_name)
+
+
+    @staticmethod
+    def comboboxOptions(comboId):
+        '''
+        Returns an xpath that matches options for given combobox.
+        '''
+        return r"xpath=//div[@id='%s']//div[contains(concat(' ',@class, ' '),' x-combo-list-item ')]" % (comboId)
+
+
+    @staticmethod
+    def comboboxOpenButton(element_name):
+        '''
+        Returns an xpath that matches id of given combobox trigger button.
+        '''
+        return r"xpath=(%%(xpath)s//img[contains(concat(' ',@class, ' '),' x-form-arrow-trigger ')]/ancestor::div[contains(concat(' ',@class, ' '),' x-form-item ')]/descendant::label[contains(concat(' ',@class, ' '),' x-form-item-label ') and .='%s'])[last()]/ancestor::div[contains(concat(' ',@class, ' '),' x-form-item ')]//img[contains(concat(' ',@class, ' '),' x-form-arrow-trigger ')]" % (element_name)
+
 
 
     @staticmethod
@@ -176,16 +206,40 @@ class SeleniumElementSelector(object):
         Returns an xpath that matches ext tabs with 
         the specified argument as title.
         '''
-        return r"xpath=(%%(xpath)s//span[contains(concat(' ',@class, ' '),' x-tab-strip-text  ') and .='%s'])[last()]/../../.." % (element_name)
+        return r"xpath=(%%(xpath)s//span[contains(concat(' ',@class, ' '),' x-tab-strip-text ') and .='%s'])[last()]/../../.." % (element_name)
 
 
     @staticmethod
-    def tabScopeAggregator(element_name):
+    def tabScopeAggregator( element_name ):
         '''
         Returns an xpath that matches ext tabs with 
         the specified argument as title.
         '''
-        return r"xpath=//div[@id=substring-after(((%%(xpath)s//span[contains(concat(' ',@class, ' '),' x-tab-strip-text  ') and .='%s'])[last()]/ancestor::li)[1]/@id, '__')]" % (element_name)
+        return r"xpath=((%%(xpath)s//span[contains(concat(' ',@class, ' '),' x-tab-strip-text ') and .='%s'])[last()]/ancestor::li)[1]" % (element_name)
+
+    @staticmethod
+    def tabScopeAggregatorBody( parent_xpath, action, action_context ):
+        '''
+        Returns an xpath that matches ext tabs with 
+        the specified argument as title.
+        '''
+        import re
+        context = action_context
+        
+        parent_xpath = parent_xpath % { 'xpath' : '' }
+        parent_xpath = re.sub( '^xpath=', '', parent_xpath )
+        parent_xpath = 'xpath=%s' % parent_xpath 
+        
+        tabId = context.browser_driver.get_element_id( parent_xpath )
+
+        script = """(function( tabId ){
+            tabId = tabId.split( '__' )[ 0 ];
+            var tab = selenium.browserbot.getCurrentWindow().Ext.getCmp( tabId );
+            return tab.body.dom.id;
+        })( '%s' )""" % ( tabId )
+        tabBodyId = context.browser_driver.exec_js( script )
+        
+        return r"xpath=//div[@id='%s']" % (tabBodyId)
 
 
     @staticmethod
@@ -203,7 +257,7 @@ class SeleniumElementSelector(object):
         Returns an xpath that matches ext menu item with
         the specified argument as title.
         '''
-        return r"xpath=(%%(xpath)s//a[contains(concat(' ',@class, ' '),' x-menu-item ')]/span[.='%s'])[last()]/.." % (element_name)
+        return r"xpath=(//a[contains(concat(' ',@class, ' '),' x-menu-item ')]/span[.='%s'])[last()]/.." % (element_name)
 
 
     @staticmethod

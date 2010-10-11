@@ -32,7 +32,7 @@ class GridWaitForPresenceAction(ActionBase):
 
 h3. Description
 
-Waits until a given ext tab appears or times out.
+Waits until a given ext grid appears or times out.
 
 This action is really useful when you have some processing done (maybe AJAX) before an element is dynamically created.
 '''
@@ -42,6 +42,35 @@ This action is really useful when you have some processing done (maybe AJAX) bef
     def execute(self, context, grid_key, timeout):
         self.adjustScope()
         element_type = "grid"
+        element_key = self.resolve_element_key( context, element_type, grid_key )
+
+        if not timeout:
+            timeout = extasy.DEFAULT_WAIT_FOR_PRESENCE_TIMEOUT
+        timeout = int(timeout)
+
+        if not context.browser_driver.wait_for_element_present(element_key, timeout):
+            error_message = context.language.format("element_wait_for_presence_failure", element_type, grid_key, timeout, element_key)
+            raise self.failed(error_message)
+            
+            
+class GridLinesWaitForPresenceAction(ActionBase):
+    '''h3. Examples
+
+  * And I wait for "some" grid lines to be present
+  * And I wait for "other" grid lines to be present for 5 seconds
+
+h3. Description
+
+Waits until lines of given ext grid appears or times out.
+
+This action is really useful when you have some processing done (maybe AJAX) before an element is dynamically created.
+'''
+    __builtin__ = True
+    regex = LanguageItem("grid_lines_wait_for_presence_regex")
+
+    def execute(self, context, grid_key, timeout):
+        self.adjustScope()
+        element_type = "gridLines"
         element_key = self.resolve_element_key( context, element_type, grid_key )
 
         if not timeout:
@@ -84,7 +113,7 @@ Clicks on the specified line of given grid
 
         error_message = context.language.format("element_is_visible_failure", element_type, grid_key)
         self.assert_element_is_visible(context, element_key, error_message)
-        context.browser_driver.click_element_at(element_key, 30, 1)
+        context.browser_driver.click_element_at(element_key, 1, 1)
         
         
 class GridDoubleClickOnLineAction(ActionBase):
@@ -118,4 +147,4 @@ Doubleclicks the specified line of given grid
 
         error_message = context.language.format("element_is_visible_failure", element_type, grid_key)
         self.assert_element_is_visible(context, element_key, error_message)
-        context.browser_driver.double_click_element_at(element_key, 30, 1)
+        context.browser_driver.double_click_element_at(element_key, 1, 1)

@@ -21,10 +21,119 @@
 from extasy.page import PageRegistry, Page
 from extasy.actions import ActionBase
 from extasy.languages import LanguageItem
+import extasy
 
 def resolve_element_key(context, element_type, element_name, resolve_function):
     element_category = context.language.get(element_type.encode("utf-8") + "_category")
     return resolve_function(context, element_category, element_name)
+
+
+class ComboOpenAction(ActionBase):
+    '''h3. Example
+
+  * And I open "sports" combo
+
+h3. Description
+
+This action instructs the browser driver to open the specified ext combo.'''
+
+    __builtin__ = True
+    regex = LanguageItem("combo_open_regex")
+
+    def execute(self, context, combo_name ):
+        self.adjustScope()
+        combo_key = self.resolve_element_key( context, 'combobox', combo_name )
+
+        error_message = context.language.format("element_is_visible_failure", 'combobox', combo_name)
+        self.assert_element_is_visible(context, combo_key, error_message)
+
+        comboId = context.browser_driver.get_element_id( combo_key )
+        
+        script = """(function( comboId ){
+            var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+            combo.collapse();
+            return 'ok';
+        })( '%s' )""" % ( comboId )
+        context.browser_driver.exec_js( script )
+        
+        combo_open_key = self.resolve_element_key( context, 'comboboxOpenButton', combo_name )
+        context.browser_driver.click_element_at( combo_open_key, 5, 5 )
+        
+        
+class ComboOptionsWaitForPresenceAction(ActionBase):
+    '''h3. Example
+
+  * And I wait for "some" combo options to be present
+  * And I wait for "other" combo options to be present for 5 seconds
+
+h3. Description
+
+This action instructs the browser driver to open the specified ext combo.'''
+
+    __builtin__ = True
+    regex = LanguageItem("combo_options_wait_for_presence_regex")
+
+    def execute(self, context, combo_name, timeout ):
+        self.adjustScope()
+        combo_key = self.resolve_element_key( context, 'combobox', combo_name )
+
+        error_message = context.language.format("element_is_visible_failure", 'combobox', combo_name)
+        self.assert_element_is_visible(context, combo_key, error_message)
+
+        comboId = context.browser_driver.get_element_id( combo_key )
+
+        script = """(function( comboId ){
+            var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+            if( !combo.list ) return '';
+            return combo.list.dom.id;
+        })( '%s' )""" % ( comboId )
+        comboListId = context.browser_driver.exec_js( script )
+        
+        if not comboListId:
+            error_message = context.language.format("combo_get_list_failure", combo_name )
+            raise self.failed(error_message)
+
+        if not timeout:
+            timeout = extasy.DEFAULT_WAIT_FOR_PRESENCE_TIMEOUT
+        timeout = int(timeout)
+        
+        element_key = self.resolve_element_key( context, 'comboboxOptions', comboListId )
+        if not context.browser_driver.wait_for_element_present(element_key, timeout):
+            error_message = context.language.format("element_wait_for_presence_failure", 'comboboxOptions', combo_name, timeout, element_key)
+            raise self.failed(error_message)
+        
+
+class ComboCloseAction(ActionBase):
+    '''h3. Example
+
+  * And I close "sports" combo
+
+h3. Description
+
+This action instructs the browser driver to close the specified ext combo.'''
+
+    __builtin__ = True
+    regex = LanguageItem("combo_close_regex")
+
+    def execute(self, context, combo_name ):
+        self.adjustScope()
+        combo_key = self.resolve_element_key( context, 'combobox', combo_name )
+
+        error_message = context.language.format("element_is_visible_failure", 'combobox', combo_name)
+        self.assert_element_is_visible(context, combo_key, error_message)
+
+        comboId = context.browser_driver.get_element_id( combo_key )
+
+        script = """(function( comboId ){
+            var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+            combo.collapse();
+            return 'ok';
+        })( '%s' )""" % ( comboId )
+        result = context.browser_driver.exec_js( script )
+        
+        if not result:
+            error_message = context.language.format("combo_close_failure", combo_name )
+            raise self.failed(error_message)
 
 
 class ComboOptionByValueAction(ActionBase):
@@ -54,6 +163,7 @@ This action instructs the browser driver to select the option in the specified e
             if( !record ){
                 return '';
             }
+            combo.collapse();
             combo.setValue( record.get( combo.valueField ) );
             return 'ok';
         })( '%s', '%s' )""" % ( comboId, option_value )
@@ -88,6 +198,7 @@ This action asserts that the currently selected option in the specified combo ha
         if (unicode(selected_value) != unicode(option_value)):
             error_message = context.language.format("combo_has_selected_value_failure", combo_name, option_value, selected_value)
             raise self.failed(error_message)
+
 
 class ComboOptionByIndexAction(ActionBase):
     '''h3. Example

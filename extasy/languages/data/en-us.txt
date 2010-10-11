@@ -78,6 +78,7 @@ window_wait_for_presence_regex = ^(And )?I wait for( [\"](?P<window_key>[^"]+)[\
 window_wait_for_presence_regex = ^(And )?I close the( [\"](?P<window_key>[^"]+)[\"])? window$
 
 grid_wait_for_presence_regex = ^(And )?I wait for( [\"](?P<grid_key>[^"]+)[\"])? grid to be present( for (?P<timeout>\d+) seconds)?$
+grid_lines_wait_for_presence_regex = ^(And )?I wait for( [\"](?P<grid_key>[^"]+)[\"])? grid lines to be present( for (?P<timeout>\d+) seconds)?$
 grid_click_on_line_regex = ^(And )?I click on the (?P<grid_line>((first)|([0-9]+(st|nd|rd|th))|(last))) line of( [\"](?P<grid_key>[^"]+)[\"])? grid$
 grid_doubleclick_on_line_regex = ^(And )?I doubleclick the (?P<grid_line>((first)|([0-9]+(st|nd|rd|th))|(last))) line of( [\"](?P<grid_key>[^"]+)[\"])? grid$
 grid_line_number_first_regex = first
@@ -117,17 +118,20 @@ image_does_not_have_src_regex = ^(And )?I see [\"](?P<image_name>.+)[\"] image d
 
 link_has_href_regex = ^(And )?I see [\"](?P<link_name>.+)[\"] link (has|contains) [\"](?P<href>.+)[\"] (in )?href$
 
-combo_contains_option_with_text_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo contains an option with text [\"](?P<text>.+?)[\"]$
-combo_does_not_contain_option_with_text_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo does not contain an option with text [\"](?P<text>.+?)[\"]$
-combo_has_selected_index_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo has selected index of (?P<index>\d+)$
-combo_has_selected_value_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo has selected value of [\"](?P<option_value>.+?)[\"]$
-combo_has_selected_text_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo has selected text of [\"](?P<text>.+?)[\"]$
+combo_open_regex = ^(And )?I open [\"](?P<combo_name>.+?)[\"] combo$
+combo_close_regex = ^(And )?I close [\"](?P<combo_name>.+?)[\"] combo$
+combo_contains_option_with_text_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo contains an option with text [\"](?P<text>.+?)[\"]$
+combo_does_not_contain_option_with_text_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo does not contain an option with text [\"](?P<text>.+?)[\"]$
+combo_has_selected_index_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo has selected index of (?P<index>\d+)$
+combo_has_selected_value_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo has selected value of [\"](?P<option_value>.+?)[\"]$
+combo_has_selected_text_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo has selected text of [\"](?P<text>.+?)[\"]$
 combo_option_by_index_regex = ^(And )?I select the option with index of (?P<index>\d+) in [\"](?P<combo_name>.+?)[\"] combo$
 combo_option_by_value_regex = ^(And )?I select the option with value of [\"](?P<option_value>.+?)[\"] in [\"](?P<combo_name>.+?)[\"] combo$
 combo_option_by_text_regex = ^(And )?I select the option with text of [\"](?P<text>.+?)[\"] in [\"](?P<combo_name>.+?)[\"] combo$
-combo_does_not_have_selected_index_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo does not have selected index of (?P<index>\d+)$
-combo_does_not_have_selected_value_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo does not have selected value of [\"](?P<value>.+?)[\"]$
-combo_does_not_have_selected_text_regex = ^(And )?I see [\"](?P<combo_name>.+?)[\"] combo does not have selected text of [\"](?P<text>.+?)[\"]$
+combo_does_not_have_selected_index_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo does not have selected index of (?P<index>\d+)$
+combo_does_not_have_selected_value_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo does not have selected value of [\"](?P<value>.+?)[\"]$
+combo_does_not_have_selected_text_regex = ^(And )?I see (that )?[\"](?P<combo_name>.+?)[\"] combo does not have selected text of [\"](?P<text>.+?)[\"]$
+combo_options_wait_for_presence_regex = ^(And )?I wait for [\"](?P<combo_name>[^"]+)[\"] combo options to be present( for (?P<timeout>\d+) seconds)?$
 
 textbox_type_regex = ^(And )?I fill [\"](?P<textbox_name>.+)[\"] textbox with [\"](?P<text>.+)[\"]$
 textbox_type_keys_regex = ^(And )?I slowly fill [\"](?P<textbox_name>.+)[\"] textbox with [\"](?P<text>.+)[\"]$
@@ -195,6 +199,9 @@ combo_does_not_have_selected_text_failure = The selected text for combo %s shoul
 combo_option_by_index_failure = The option in the combo %s with index of %d was not found or can't be selected.
 combo_option_by_value_failure = The option in the combo %s with value of "%s" was not found or can't be selected.
 combo_option_by_text_failure = The option in the combo %s with text of "%s" was not found or can't be selected.
+combo_open_failure = The %s combo was not found or can't be opened.
+combo_close_failure = The %s combo %s was not found or can't be closed.
+combo_get_list_failure = The %s combo must exists and be opened to be able to wait options to appear.
 
 textbox_is_empty_failure = The textbox %s is not empty.
 textbox_is_not_empty_failure = The textbox %s is empty.

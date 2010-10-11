@@ -23,6 +23,7 @@ import re
 from extasy.errors import ActionFailedError, LanguageDoesNotResolveError
 from extasy.languages import LanguageItem, AVAILABLE_GETTERS, LanguageGetter
 from extasy.scope import ScopeManager
+from extasy.drivers.core import selenium_element_selector
 import re
 
 ACTIONS = []
@@ -149,11 +150,29 @@ class ActionBase(object):
     def resolve_element_key(self, context, element_type, element_key, **kw):
         xpath = r''
         for scopeEl in ScopeManager.all():
-            xpath = self.base_resolve_element_key( context, scopeEl[ 'type' ] + 'ScopeAggregator', scopeEl[ 'key' ] ) % { 'xpath' : xpath }
+            scopeAggregatorXPath = self.resolve_scope_aggregator_key( context, scopeEl[ 'type' ] + 'ScopeAggregator', scopeEl[ 'key' ], scopeEl).replace( '%(xpath)s', '%%(xpath)s%(xpath2)s' ) % { 'xpath2' : xpath }
+            
+            if( getattr( selenium_element_selector.SeleniumElementSelector, scopeEl[ 'type' ] + 'ScopeAggregatorBody' ) ):
+                scopeAggregatorBodyXPath = self.base_resolve_element_key( context, scopeEl[ 'type' ] + 'ScopeAggregatorBody', scopeAggregatorXPath, action_context=context, action=self ).replace( '%(xpath)s', '%%(xpath)s%(xpath2)s' ) % { 'xpath2' : xpath }
+                xpath = scopeAggregatorBodyXPath % { 'xpath' : xpath }
         
         xpath = self.base_resolve_element_key( context, element_type, element_key, **kw) % { 'xpath' : xpath }
         
         return 'xpath=%s' % xpath
+        
+        
+    def resolve_scope_aggregator_key(self, context, element_type, element_key, baseScopeEl, **kw):
+        xpath = r''
+        baseScopeElIndex = ScopeManager.all().index( baseScopeEl )
+        scopeList = ScopeManager.all()[:baseScopeElIndex]
+        
+        for scopeEl in scopeList:
+            xpath = self.base_resolve_element_key( context, scopeEl[ 'type' ] + 'ScopeAggregator', scopeEl[ 'key' ], context=context, xpath=xpath ).replace( '%(xpath)s', '%%(xpath)s%(xpath2)s' ) % { 'xpath2' : xpath }
+
+        xpath = self.base_resolve_element_key( context, element_type, element_key, **kw).replace( '%(xpath)s', '%%(xpath)s%(xpath2)s' ) % { 'xpath2' : xpath }
+
+        return 'xpath=%s' % xpath
+        
 
     def base_resolve_element_key(self, context, element_type, element_key, **kw):
         page = context.current_page

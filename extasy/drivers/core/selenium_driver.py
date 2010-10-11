@@ -91,7 +91,6 @@ class SeleniumDriver(BaseDriver):
     def double_click_element_at(self, element_selector, x, y):
         self.selenium.double_click_at(element_selector, '%s,%s' % (x,y) )
 
-
     def get_title(self):
         return self.selenium.get_title()
 

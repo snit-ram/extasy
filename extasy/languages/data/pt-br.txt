@@ -78,6 +78,7 @@ window_wait_for_presence_regex = ^(E )?[eE]u espero a janela( [\"](?P<window_key
 window_close_regex = ^(E )?[eE]u fecho a janela( [\"](?P<window_key>[^"]+)[\"])?$
 
 grid_wait_for_presence_regex = ^(E )?[eE]u espero (o|(um)) grid( [\"](?P<grid_key>[^"]+)[\"])? aparecer( por (?P<timeout>\d+) segundos)?$
+grid_lines_wait_for_presence_regex = ^(E )?[eE]u espero as linhas do grid( [\"](?P<grid_key>[^"]+)[\"])? aparecerem( por (?P<timeout>\d+) segundos)?$
 grid_click_on_line_regex = ^(E )?[eE]u clico na (?P<grid_line>((primeira)|([0-9]+a)|(última))) linha do grid( [\"](?P<grid_key>[^"]+)[\"])?$
 grid_doubleclick_on_line_regex = ^(E )?[eE]u dou um duplo clique na (?P<grid_line>((primeira)|([0-9]+a)|(última))) linha do grid( [\"](?P<grid_key>[^"]+)[\"])?$
 grid_line_number_first_regex = primeira
@@ -117,6 +118,8 @@ image_does_not_have_src_regex = ^(E )?[eE]u vejo que a imagem [\"](?P<image_name
 
 link_has_href_regex = ^(E )?[eE]u vejo que o link [\"](?P<link_name>.+)[\"] (tem|contém no) href [\"](?P<href>.+)[\"]$
 
+combo_open_regex = ^(E )?[eE]u abro o combo [\"](?P<combo_name>.+?)[\"]$
+combo_close_regex = ^(E )?[eE]u fecho o combo [\"](?P<combo_name>.+?)[\"]$
 combo_contains_option_with_text_regex = ^(E )?[eE]u vejo que o combo [\"](?P<combo_name>.+?)[\"] contém uma opção com (o )?texto [\"](?P<text>.+?)[\"]$
 combo_does_not_contain_option_with_text_regex = ^(E )?[eE]u vejo que o combo [\"](?P<combo_name>.+?)[\"] não contém uma opção com (o )?texto [\"](?P<text>.+?)[\"]$
 combo_has_selected_index_regex = ^(E )?[eE]u vejo que o índice selecionado do combo [\"](?P<combo_name>.+?)[\"] é (?P<index>\d+)$
@@ -128,6 +131,7 @@ combo_option_by_text_regex = ^(E )?[eE]u seleciono o item com (o )?texto [\"](?P
 combo_does_not_have_selected_index_regex = ^(E )?[eE]u vejo que o índice selecionado do combo [\"](?P<combo_name>.+?)[\"] não é (?P<index>\d+)$
 combo_does_not_have_selected_value_regex = ^(E )?[eE]u vejo que o valor selecionado do combo [\"](?P<combo_name>.+?)[\"] não é [\"](?P<value>.+?)[\"]$
 combo_does_not_have_selected_text_regex = ^(E )?[eE]u vejo que o texto selecionado do combo [\"](?P<combo_name>.+?)[\"] não é [\"](?P<text>.+?)[\"]$
+combo_options_wait_for_presence_regex = ^(E )?[eE]u espero as opções do combo [\"](?P<combo_name>[^"]+)[\"] aparecerem( por (?P<timeout>\d+) segundos)?$
 
 textbox_type_regex = ^(E )?[eE]u preencho a caixa de texto [\"](?P<textbox_name>.+)[\"] com [\"](?P<text>.+)[\"]$
 textbox_type_keys_regex = ^(E )?[eE]u preencho lentamente a caixa de texto [\"](?P<textbox_name>.+)[\"] com [\"](?P<text>.+)[\"]$
@@ -194,6 +198,9 @@ combo_does_not_have_selected_text_failure = O texto selecionado do combo %s não
 combo_option_by_index_failure = A opção do combo %s com índice de %d não foi encontrada ou não pode ser selecionada.
 combo_option_by_value_failure = A opção do combo %s com valor de "%s" não foi encontrada ou não pode ser selecionada.
 combo_option_by_text_failure = A opção do combo %s com texto de "%s" não foi encontrada ou não pode ser selecionada.
+combo_open_failure = O combo %s não foi encontrado ou não pode ser aberto.
+combo_close_failure = O combo %s não foi encontrado ou não pode ser fechado.
+combo_get_list_failure = O combo %s precisa existir e estar aberto para esperar as opções aparecerem
 
 textbox_is_empty_failure = A caixa de texto %s não está vazia e deveria estar.
 textbox_is_not_empty_failure = A caixa de texto %s está vazia e não deveria estar.
