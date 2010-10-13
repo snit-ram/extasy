@@ -1,4 +1,0 @@
-[console_scripts]
-extasy_console = extasy.extasy_console:console
-extasy_help = extasy.extasy_help:console
-
