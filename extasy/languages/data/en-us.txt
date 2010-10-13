@@ -57,25 +57,25 @@ page_wait_for_seconds_regex = ^(And )?I wait for (?P<timeout>\d+([.]\d+)?) secon
 page_check_contains_markup_regex = ^(And )?I see that current page contains [\"\'](?P<expected_markup>.+)[\'\"]$
 page_check_does_not_contain_markup_regex = ^(And )?I see that current page does not contain [\"\'](?P<expected_markup>.+)[\'\"]$
 
-checkbox_is_checked_regex = ^(And )?I see the [\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)? is checked$
-checkbox_is_not_checked_regex = ^(And )?I see the [\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)? is not checked$
-checkbox_check_regex = ^(And )?I check the [\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)?$
-checkbox_uncheck_regex = ^(And )?I uncheck the [\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)?$
+checkbox_is_checked_regex = ^(And )?I see (that )?(the )?[\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)? is checked$
+checkbox_is_not_checked_regex = ^(And )?I see (that )?(the )?[\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)? is not checked$
+checkbox_check_regex = ^(And )?I check (the )?[\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)?$
+checkbox_uncheck_regex = ^(And )?I uncheck (the )?[\"](?P<checkbox_key>.+?)[\"] checkbox( in [\"](?P<checkbox_group_key>.+?)[\"] group)?$
 
-menu_item_click_regex = ^(And )?I click the [\"](?P<menu_item_key>.+)[\"] menu item$
-menu_item_mouseover_regex = ^(And )?I mouseover [\"](?P<menu_item_key>.+)[\"] menu item$
+menu_item_click_regex = ^(And )?I click (the )?[\"](?P<menu_item_key>.+)[\"] menu item$
+menu_item_mouseover_regex = ^(And )?I mouseover (the )?[\"](?P<menu_item_key>.+)[\"] menu item$
 menu_item_wait_for_presence_regex = ^(And )?I wait for [\"](?P<menu_item_key>[^"]+)[\"] menu item to be present( for (?P<timeout>\d+) seconds)?$
 
-tree_node_click_regex = ^(And )?I click the [\"](?P<tree_node_key>.+)[\"] tree node$
-tree_node_open_regex = ^(And )?I open the [\"](?P<tree_node_key>.+)[\"] tree node$
+tree_node_click_regex = ^(And )?I click (the )?[\"](?P<tree_node_key>.+)[\"] tree node$
+tree_node_open_regex = ^(And )?I open (the )?[\"](?P<tree_node_key>.+)[\"] tree node$
 tree_node_wait_for_presence_regex = ^(And )?I wait for [\"](?P<tree_node_key>[^"]+)[\"] tree node to be present( for (?P<timeout>\d+) seconds)?$
 
-tab_click_regex = ^(And )?I click the [\"](?P<tab_key>.+)[\"] tab$
-tab_close_regex = ^(And )?I close the [\"](?P<tab_key>.+)[\"] tab$
+tab_click_regex = ^(And )?I click( the)? [\"](?P<tab_key>.+)[\"] tab$
+tab_close_regex = ^(And )?I close( the)? [\"](?P<tab_key>.+)[\"] tab$
 tab_wait_for_presence_regex = ^(And )?I wait for [\"](?P<tab_key>[^"]+)[\"] tab to be present( for (?P<timeout>\d+) seconds)?$
 
 window_wait_for_presence_regex = ^(And )?I wait for( [\"](?P<window_key>[^"]+)[\"])? window to be present( for (?P<timeout>\d+) seconds)?$
-window_wait_for_presence_regex = ^(And )?I close the( [\"](?P<window_key>[^"]+)[\"])? window$
+window_close_regex = ^(And )?I close( the)?( [\"](?P<window_key>[^"]+)[\"])? window$
 
 grid_wait_for_presence_regex = ^(And )?I wait for( [\"](?P<grid_key>[^"]+)[\"])? grid to be present( for (?P<timeout>\d+) seconds)?$
 grid_lines_wait_for_presence_regex = ^(And )?I wait for( [\"](?P<grid_key>[^"]+)[\"])? grid lines to be present( for (?P<timeout>\d+) seconds)?$
@@ -84,9 +84,9 @@ grid_doubleclick_on_line_regex = ^(And )?I doubleclick the (?P<grid_line>((first
 grid_line_number_first_regex = first
 grid_line_number_last_regex = last
 
-radio_is_checked_regex = ^(And )?I see the [\"](?P<radio_key>.+?)[\"] radio( in [\"](?P<radio_group_key>.+?)[\"] group) is checked$
-radio_is_not_checked_regex = ^(And )?I see the [\"](?P<radio_key>.+?)[\"] radio( in [\"](?P<radio_group_key>.+?)[\"] group) is not checked$
-radio_check_regex = ^(And )?I check the [\"](?P<radio_key>.+?)[\"] radio( in [\"](?P<radio_group_key>.+?)[\"] group)$
+radio_is_checked_regex = ^(And )?I see (that )?(the )?[\"](?P<radio_key>.+?)[\"] radio( in [\"](?P<radio_group_key>.+?)[\"] group)? is checked$
+radio_is_not_checked_regex = ^(And )?I see (that )?(the )?[\"](?P<radio_key>.+?)[\"] radio( in [\"](?P<radio_group_key>.+?)[\"] group)? is not checked$
+radio_check_regex = ^(And )?I check (the )?[\"](?P<radio_key>.+?)[\"] radio( in [\"](?P<radio_group_key>.+?)[\"] group)?$
 
 element_contains_style_regex = ^(And )?I see [\"](?P<element_name>.+)[\"] (?P<element_type><element selector>) has [\"](?P<style_name>.+)[\"] style$
 element_does_not_contain_style_regex = ^(And )?I see [\"](?P<element_name>.+)[\"] (?P<element_type><element selector>) does not have [\"](?P<style_name>.+)[\"] style$
