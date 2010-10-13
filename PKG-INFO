@@ -1,12 +1,12 @@
-Metadata-Version: 1.0
+Metadata-Version: 0.9
 Name: EXTasy
-Version: 1.2.45
+Version: 0.9
 Summary: EXTasy is a BDD style Acceptance Testing framework
-Home-page: http://www.extasy.org
+Home-page: 
 Author: EXTasy team
 Author-email: extasy@googlegroups.com
 License: OSI
-Description: EXTasy is a Behavior-Driven Acceptance Testing framework (more on http://www.extasy.org).
+Description: EXTasy is a Behavior-Driven Acceptance Testing framework for ExtJS interfaces. It is based on Pyccuracy.
 Keywords: Acceptance Testing Accuracy Behavior Driven Development
 Platform: UNKNOWN
 Classifier: Development Status :: 4 - Beta
