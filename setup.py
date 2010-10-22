@@ -20,16 +20,15 @@
 
 
 from setuptools import setup, find_packages
-from extasy import Version
-
-#classifier should be changed to "Development Status :: 5 - Production/Stable" soon
+from src import Version
+README = open('README.rst').read()
 
 setup(
-    name = 'EXTasy',
+    name = 'extasy',
     version = Version,
-    description = "EXTasy is a BDD style Acceptance Testing framework based on Pyccuracy for ExtJS interfaces",
-    long_description = """EXTasy is a Behavior-Driven Acceptance Testing framework based on Pyccuracy for ExtJS interfaces""",
-    keywords = 'Acceptance Testing Accuracy Behavior Driven Development',
+    description = "EXTasy is a BDD framework bult on top of PyCukes for ExtJS interfaces",
+    long_description=README,
+    keywords = 'bdd behaviour behavior pyhistorian story',
     author = 'EXTasy team',
     author_email = 'snit.ram@gmail.com',
     url = '',
@@ -46,26 +45,21 @@ setup(
                    'Programming Language :: Python :: 2.6',
                    'Topic :: Software Development :: Quality Assurance',
                    'Topic :: Software Development :: Testing',],
-    packages = find_packages(),
-    package_dir = {"extasy": "extasy"},
     include_package_data = True,
-    package_data = {
-        '': ['*.template'],
-        'extasy.languages.data': ['*.txt'],
-        'extasy.xslt': ['*.xslt'],
-    },
+    packages=['extasy',],
+    package_dir={'extasy': 'src'},
 
+    zip_safe=False,
     install_requires=[
-        "selenium",
+        'story_parser>=0.1.2',
+        'should_dsl',
+        'pyhistorian>=0.6.8',
+        'pycukes',
+        'selenium'
     ],
 
-    entry_points = {
-        'console_scripts': [
-            'extasy_console = extasy.extasy_console:console',
-            'extasy_help = extasy.extasy_help:console',
-        ],
-    },
-
+    entry_points= {
+        'console_scripts': ['extasy = extasy.console:main']},
 )
 
 
