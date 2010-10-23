@@ -20,7 +20,7 @@ Installation
 
 You can install it using Python's easy_install::
 
-    $ easy_install pycukes
+    $ easy_install extasy
 
 Or You can download source code and install using setup.py script::
 
