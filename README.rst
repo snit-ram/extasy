@@ -1,14 +1,3 @@
-h1. EXTasy
-
-EXTasy is a "Behaviour-Driven-Development-style":http://behaviour-driven.org tool written in Python that aims to make it easier to write automated acceptance tests for ExtJS interfaces. It is based on "Pyccuracy":http://github.com/heynemann/pyccuracy and It improves the readability of those tests by using a structured natural language - and a simple mechanism to extend this language - so that both developers and customers can collaborate and understand what the tests do.
-
-h2. Get in touch with the team
-
-If you have further questions, please contact the team:
-
-  * "snit-ram":http://github.com/snit-ram ("@snit_ram":http://twitter.com/snit_ram)
-
-
 EXTasy
 =======
 
@@ -38,7 +27,7 @@ Each story file by convention ends with .story, like ``calculator.story``.
 So, lets say you have the directory tree::
 
  |-- calculator
-    `-- stories
+    |-- stories
         |-- calculator.story
 
 
@@ -50,3 +39,11 @@ Or if you can specify exactly what stories run::
     
     $ extasy stories/calculator.story
 
+
+
+Get in touch with the team
+=====
+
+If you have further questions, please contact the team:
+
+      snit-ram: http://github.com/snit-ram, http://twitter.com/snit_ram
