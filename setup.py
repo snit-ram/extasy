@@ -46,8 +46,18 @@ setup(
                    'Topic :: Software Development :: Quality Assurance',
                    'Topic :: Software Development :: Testing',],
     include_package_data = True,
-    packages=['extasy',],
-    package_dir={'extasy': 'src'},
+    packages = [
+        'extasy',
+        'extasy.lang',
+        'extasy.selenium',
+        'extasy.step_definitions',
+    ],
+    package_dir = {
+        'extasy': 'src'
+        'extasy.lang': 'src/lang',
+        'extasy.selenium': 'src/selenium',
+        'extasy.step_definitions': 'src/step_definitions',
+    },
 
     zip_safe=False,
     install_requires=[
