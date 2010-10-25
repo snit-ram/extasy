@@ -53,7 +53,7 @@ setup(
         'extasy.step_definitions',
     ],
     package_dir = {
-        'extasy': 'src'
+        'extasy': 'src',
         'extasy.lang': 'src/lang',
         'extasy.selenium': 'src/selenium',
         'extasy.step_definitions': 'src/step_definitions',
