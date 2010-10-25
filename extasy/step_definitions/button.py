@@ -1,5 +1,4 @@
 import extasy
-import extasy.selenium
 from extasy import *
 
 def _getxpath( label ):

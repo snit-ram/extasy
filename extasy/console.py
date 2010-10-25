@@ -7,6 +7,62 @@ from finder import (extasy_find_steps_modules,
                     find_before_each,
                     find_after_all,
                     find_after_each,)
+
+
+import pyhistorian
+from pyhistorian.output import colored
+import sys
+
+def _extasy_story_colored(self, msg, color):
+    if not isinstance( msg, unicode):
+        msg = msg.decode( 'utf8' )
+    
+    msg = msg.encode( sys.stdin.encoding )
+    
+    if 'windows' in os.environ.get( 'OS', '' ).lower():
+        set_terminal_color( 'white' )
+    
+    if self.colored == False:
+        return msg
+    return colored(msg, color)
+
+def _extasy_outputwriter_colored(self, msg, color):
+    if not isinstance( msg, unicode):
+        msg = msg.decode( 'utf8' )
+    
+    msg = msg.encode( sys.stdin.encoding )
+    
+    if 'windows' in os.environ.get( 'OS', '' ).lower():
+        set_terminal_color( 'white' )
+    
+    if self._should_be_colored:
+        return colored(msg, color)
+        
+    return msg
+    
+import os
+if 'windows' in os.environ.get( 'OS', '' ).lower(): 
+    import ctypes, sys
+    def set_terminal_color(color):
+        colors = [ 'black', 'blue', 'green', 'aqua', 'red', 'purple', 'yellow', 'white', 'gray', 'light blue', 'light green', 'light aqua', 'light red', 'light purple', 'light yellow' ]
+        std_out_handle = ctypes.windll.kernel32.GetStdHandle(-11)
+        ctypes.windll.kernel32.SetConsoleTextAttribute(std_out_handle, colors.index( color ) )
+    
+
+import termcolor
+def colored(msg, color):
+    if color == 'term':
+        return msg
+        
+    if 'windows' in os.environ.get( 'OS', '' ).lower():
+        set_terminal_color( color.lower() )
+        
+    return msg
+    
+    
+pyhistorian.output.OutputWriter._colored = _extasy_outputwriter_colored
+pyhistorian.story.Story._colored = _extasy_story_colored
+
                     
 from pycukes.runner import StoryRunner
 

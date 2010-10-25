@@ -1,5 +1,6 @@
 import extasy.selenium
 from extasy import *
+import time
 
 @Given( 'I go to page "$url"' )
 @When( 'I go to page "$url"' )

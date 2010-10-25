@@ -33,5 +33,6 @@ def EndTest( f ):
     
 def execute_hooks( name ):
     global _extasy_hooks
+    extasy.scope.reset()
     for f in _extasy_hooks[ name ]:
         f( extasy )
