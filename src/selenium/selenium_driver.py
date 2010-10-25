@@ -34,6 +34,8 @@ class SeleniumDriver(object):
             url = extasy.settings.get( 'base-url', 'http://localhost' )
             
         self.start_selenium( url )
+        extasy.decorators.execute_hooks( 'StartTest' )
+        
         
     def start_selenium(self, url):
         host = extasy.settings.get( "selenium-server", "localhost" )
@@ -51,6 +53,7 @@ class SeleniumDriver(object):
             raise DriverError("Error when starting selenium. Is it running?\n\n\n Error: %s\n" % format_exc(e))
 
     def stop_test(self):
+        extasy.decorators.execute_hooks( 'EndTest' )
         self.stop_selenium()
     
     def stop_selenium(self):

@@ -18,9 +18,10 @@ import extasy
 def extasy_console(stories_dir, steps_dir, output, colored=False, settings = None):
     modules = extasy_find_steps_modules(steps_dir)
     extasy.settings.setValues( settings )
+    extasy.selenium.getDriver().start_test()
     for spec in find_text_specs(stories_dir):
         StoryRunner(spec, output, colored=colored, modules=modules).run()
-
+    extasy.selenium.getDriver().stop_test()
 
 def main():
     steps_modules = []
@@ -72,6 +73,8 @@ def main():
         colored = False
 
     exit_code = True
+    
+    extasy.selenium.getDriver().start_test()
     for index, story in enumerate(files):
         story_status = StoryRunner(open(story).read(),
                                          sys.stdout,
@@ -86,4 +89,6 @@ def main():
         if index < len(files)-1:
             sys.stdout.write('\n\n')
 
+    extasy.selenium.getDriver().stop_test()
+    
     exit(int(not exit_code))

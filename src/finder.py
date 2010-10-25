@@ -21,5 +21,6 @@ def _extasy_find_all_steps_modules( dirs, suffix = '.py' ):
     
 def extasy_find_steps_modules( dirname ):
     modules = _extasy_find_all_steps_modules( [ '%s/%s' % ( BASE_DIR, x ) for x in EXTASY_STEP_PATHS ] )
-    modules += _extasy_find_all_steps_modules( [dirname], 'steps.py' )
+    if( os.path.exists( dirname ) ):
+        modules += _extasy_find_all_steps_modules( [dirname], 'steps.py' )
     return modules

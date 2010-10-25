@@ -1,23 +1,28 @@
-class Scope( object ):
+class _Scope( object ):
     stack = []
 
-    @classmethod
-    def reset( cls ):
-        cls.stack = []
+    def reset( self ):
+        self.stack = []
+        
+    def get_xpath( self ):
+        if not self.stack:
+            return ''
+        
+        return self.stack[ -1 ][ 1 ]
 
-    @classmethod
-    def add( cls, step ):
-        if cls.stack and cls.stack[ -1 ] == indentation_level:
+    def enter( self, scope_xpath, indentation_level ):
+        if self.stack and self.stack[ -1 ] == indentation_level:
             return
 
-        cls.stack.append( step )
+        self.stack.append( ( indentation_level, scope_xpath, ) )
 
-    @classmethod
-    def unindent_until( cls, indentation_level ):
+    def quit_to_indentation_level( self, indentation_level ):
         i = 0
-        while cls.stack:
-            if cls.stack[-1][3] <= indentation_level:
+        while self.stack:
+            if self.stack[-1][0] <= indentation_level:
                 break
 
             i += 1
-            cls.indentation_stack.pop()
+            self.stack.pop()
+            
+scope = _Scope()

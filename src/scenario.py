@@ -2,11 +2,16 @@
 # -*- coding: utf8 -*-
 
 import pyhistorian
+import extasy
 
 #overwrite _run_step method
 def extasy__run_step(self, extasy_step, step_name):
     # @TODO: CHECK UNINDENT
     step = extasy_step[:-1]
+    self.indentation_level = extasy_step[3]
+    
+    extasy.scope.quit_to_indentation_level( self.indentation_level )
+    
     return pyhistorian__run_step( self, step, step_name )
 
 pyhistorian__run_step = pyhistorian.Scenario._run_step
@@ -21,7 +26,7 @@ def extasy_run_steps(self, pyhistorian_steps, step_name):
     for i in xrange( len( pyhistorian_steps ) ):
         steps.append( pyhistorian_steps[ i ] + ( extasy_steps[i][3], ) )
     
-    # @TODO: RESTART_SCOPE
+    extasy.scope.reset()
     if len(steps) == 0:
         return
         

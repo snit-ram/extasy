@@ -4,22 +4,23 @@ Version = "0.9.1"
 Release = "Sunrise"
 DEFAULT_WAIT_FOR_PRESENCE_TIMEOUT = 10
 DEFAULT_WAIT_FOR_DISAPPEAR_TIMEOUT = 10
-
-from pycukes.finder import (find_steps_modules,
-                    find_text_specs,
-                    find_before_all,
-                    find_after_all,
-                    find_before_each,
-                    find_after_each)
                     
 from pycukes.hooks import BeforeAll, AfterAll, BeforeEach, AfterEach
 from console import extasy_console
 from pycukes import *
 import console
 
+from scopemanager import *
+import decorators
 import scenario
 import parser
 import runner
+import lang
+import step_definitions as steps
+from decorators import *
+
+class StepFailure( AssertionError ):
+    pass
 
 class _Settings( object ):
     settings = {}
@@ -30,7 +31,6 @@ class _Settings( object ):
             if not x.startswith( '_' ):
                 self.settings[ x ] = getattr( values, x )
         return self.settings
-        
     
     def get( self, att, default = None ):
         if att in self.settings:
