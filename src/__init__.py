@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-Version = "0.9.1"
+Version = "0.9.2"
 Release = "Sunrise"
 DEFAULT_WAIT_FOR_PRESENCE_TIMEOUT = 10
 DEFAULT_WAIT_FOR_DISAPPEAR_TIMEOUT = 10
