@@ -92,5 +92,8 @@ lang = {
     'I open "$label" combo' : 'Eu abro o combo "$label"',
     'I close "$label" combo' : 'Eu fecho o combo "$label"',
     'I wait for "$label" combo options to be present' : 'Eu espero as opções do combo "$label" aparecerem',
-    'I wait for "$label" combo options to be present for $timeout seconds' : 'Eu espero as opções do combo "$label" aparecerem por $timeout segundos'
+    'I wait for "$label" combo options to be present for $timeout seconds' : 'Eu espero as opções do combo "$label" aparecerem por $timeout segundos',
+    'I select the option with value of "$value" in "$label" combo' : 'Eu seleciono a opção de valor "$value" no combo "$label"',
+    'I select the option with index of $index in "$label" combo' : 'Eu seleciono a opção de índice $index no combo "$label"',
+    'I select the option with text of "$text" in "$label" combo' : 'Eu seleciono a opção de texto "$text" no combo "$label"',
 }

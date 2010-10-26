@@ -31,19 +31,19 @@ def extasy_run(self):
                 extasy_actual_scenario = (None, step_message, (), indentation_level)
                 for step_regex, (step_method, step_args) in all_runner_steps.items():
                     step_message = step_message.strip()
-                    msg_pattern = re.sub(TEMPLATE_PATTERN, r'([^"]*?)', step_regex)
-                    msg_pattern = re.escape(msg_pattern)
-                    msg_pattern = r'^%s$' % msg_pattern.replace(re.escape(r'([^"]*?)'), r'([^"]*?)')
+                    msg_pattern = re.sub( '\\$([a-zA-Z]\\w*)', r'(?P<\1>[^"]*?)', step_regex)
+                    msg_pattern = re.escape(msg_pattern).replace( r'\_', '_' )
+                    msg_pattern = re.sub( r'\\\(\\\?P\\\<(.*?)\\\>\\\[\\\^\\\"\\\]\\\*\\\?\\\)', r'(?P<\1>[^"]*?)', msg_pattern )
                     
                     if re.match(msg_pattern, step_message, re.IGNORECASE ):
                         actual_scenario = (step_method,
                                            step_message,
                                            re.match(msg_pattern,
-                                                    step_message, re.IGNORECASE).groups() )
+                                                    step_message, re.IGNORECASE).groupdict() )
                         extasy_actual_scenario = (step_method,
                                            step_message,
                                            re.match(msg_pattern,
-                                                    step_message, re.IGNORECASE).groups(), indentation_level )
+                                                    step_message, re.IGNORECASE).groupdict(), indentation_level )
                 scenario_steps.append( actual_scenario )
                 extasy_scenario_steps.append( extasy_actual_scenario )
 
@@ -53,3 +53,4 @@ def extasy_run(self):
     
 
 pycukes.runner.StoryRunner.run = extasy_run
+

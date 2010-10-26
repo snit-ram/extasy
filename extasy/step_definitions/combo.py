@@ -94,3 +94,77 @@ def options_wait_for_presence( context, label ):
 @Then('I wait for "$label" combo options to be present for $timeout seconds')
 def options_wait_for_presence_timeout( context, label, timeout ):
     _options_wait_for_presence( context, label, timeout )
+    
+
+@Given('I select the option with value of "$value" in "$label" combo')
+@When('I select the option with value of "$value" in "$label" combo')
+@Then('I select the option with value of "$value" in "$label" combo')
+def select_by_value( context, label, value ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+        
+    script = """(function( comboId, value ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        var record = combo.findRecord( combo.valueField, value );
+        if( !record ){
+            return '';
+        }
+        combo.collapse();
+        combo.setValue( record.get( combo.valueField ) );
+        return 'ok';
+    })( '%s', '%s' )""" % ( comboId, value )
+    
+    result = extasy.selenium.getDriver().exec_js( script )
+    
+    if not result:
+        raise StepFailure( '"%s" combo should have an option with value of "%s"' % ( label, value ) )
+        
+
+@Given( 'I select the option with index of $index in "$label" combo' )
+@When( 'I select the option with index of $index in "$label" combo' )
+@Then( 'I select the option with index of $index in "$label" combo' )
+def select_by_index( context, label, index):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    index = int(index)
+   
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+    print (comboId,)
+    
+    script = """(function( comboId, index ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        if( index >= combo.getStore().getCount() ) return '';
+        
+        var record = combo.getStore().getAt(index);
+        
+        combo.setValue( record.get( combo.valueField ) );
+        return 'ok';
+    })( '%s', '%s' )""" % ( comboId, index )
+    
+    result = extasy.selenium.getDriver().exec_js( script )
+    
+    if not result:
+        raise StepFailure( '"%s" combo should have an option with index of "%s"' % ( label, index ) )
+        
+
+@Given( 'I select the option with text of "$text" in "$label" combo' )
+@When( 'I select the option with text of "$text" in "$label" combo' )
+@Then( 'I select the option with text of "$text" in "$label" combo' )        
+def select_by_text( context, label, text ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+    
+    script = """(function( comboId, value ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        var record = combo.findRecord( combo.displayField, value );
+        if( !record ){
+            return '';
+        }
+        combo.setValue( record.get( combo.valueField ) );
+        return 'ok';
+    })( '%s', '%s' )""" % ( comboId, text )
+    
+    result = extasy.selenium.getDriver().exec_js( script )
+    
+    if not result:
+        raise StepFailure( '"%s" combo should have an option with text of "%s"' % ( label, index ) )
