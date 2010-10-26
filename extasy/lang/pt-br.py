@@ -87,4 +87,10 @@ lang = {
     'I see that "$label" textbox is empty' : 'Eu vejo que a caixa de texto "$label" está vazia',
     'I see that "$label" textbox is not empty' : 'Eu vejo que a caixa de texto "$label" não está vazia',
     'I clean "$label" textbox' : 'Eu limpo a caixa de texto "$label"',
+    
+    #combo
+    'I open "$label" combo' : 'Eu abro o combo "$label"',
+    'I close "$label" combo' : 'Eu fecho o combo "$label"',
+    'I wait for "$label" combo options to be present' : 'Eu espero as opções do combo "$label" aparecerem',
+    'I wait for "$label" combo options to be present for $timeout seconds' : 'Eu espero as opções do combo "$label" aparecerem por $timeout segundos'
 }

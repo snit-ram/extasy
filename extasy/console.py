@@ -6,7 +6,8 @@ from finder import (extasy_find_steps_modules,
                     find_before_all,
                     find_before_each,
                     find_after_all,
-                    find_after_each,)
+                    find_after_each,
+                    extasy_find_hook_steps,)
 
 
 import pyhistorian
@@ -132,7 +133,13 @@ def main():
     
     extasy.selenium.getDriver().start_test()
     for index, story in enumerate(files):
-        story_status = StoryRunner(open(story).read(),
+        hook_steps = extasy_find_hook_steps( story )
+        before_all_methods += hook_steps.get( '_before_alls', [] )
+        after_all_methods += hook_steps.get( '_after_alls', [] )
+        before_each_methods += hook_steps.get( '_before_eachs', [] )
+        after_each_methods += hook_steps.get( '_after_eachs', [] )
+        
+        story_runner = StoryRunner(open(story).read(),
                                          sys.stdout,
                                          colored=colored,
                                          modules=steps_modules,
@@ -140,7 +147,9 @@ def main():
                                          before_all=before_all_methods,
                                          before_each=before_each_methods,
                                          after_all=after_all_methods,
-                                         after_each=after_each_methods).run()
+                                         after_each=after_each_methods)
+        
+        story_status = story_runner.run()
         exit_code = exit_code and story_status
         if index < len(files)-1:
             sys.stdout.write('\n\n')

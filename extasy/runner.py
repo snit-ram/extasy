@@ -7,7 +7,7 @@ from pycukes.runner import TEMPLATE_PATTERN
 import re
 import extasy.selenium
 
-def extasy_run(self):
+def extasy_run(self):   
     scenarios = self._parsed_story.get_stories()[0].scenarios
     for scenario_title, steps in scenarios:
         new_scenario = type('EXTasyScenario',
