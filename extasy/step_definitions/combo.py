@@ -24,6 +24,12 @@ def _get_options_xpath( comboId ):
     comboListId = extasy.selenium.getDriver().exec_js( script )
     return r"//div[@id='%s']//div[contains(concat(' ',@class, ' '),' x-combo-list-item ')]" % ( comboListId )
 
+
+def _assert_is_visible( label ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    if not extasy.selenium.getDriver().is_element_visible( combo_xpath ):
+        raise StepFailure( '"%s" combo should exists and be visible' % label )
+    
     
 @Given('I open "$label" combo')
 @When('I open "$label" combo')
@@ -101,6 +107,8 @@ def options_wait_for_presence_timeout( context, label, timeout ):
 @Then('I select the option with value of "$value" in "$label" combo')
 def select_by_value( context, label, value ):
     combo_xpath = 'xpath=' + _get_xpath( label )
+    
+    _assert_is_visible( label )
     comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
         
     script = """(function( comboId, value ){
@@ -127,8 +135,8 @@ def select_by_index( context, label, index):
     combo_xpath = 'xpath=' + _get_xpath( label )
     index = int(index)
    
+    _assert_is_visible( label )
     comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
-    print (comboId,)
     
     script = """(function( comboId, index ){
         var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
@@ -152,6 +160,7 @@ def select_by_index( context, label, index):
 def select_by_text( context, label, text ):
     combo_xpath = 'xpath=' + _get_xpath( label )
     
+    _assert_is_visible( label )
     comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
     
     script = """(function( comboId, value ){
@@ -167,4 +176,168 @@ def select_by_text( context, label, text ):
     result = extasy.selenium.getDriver().exec_js( script )
     
     if not result:
-        raise StepFailure( '"%s" combo should have an option with text of "%s"' % ( label, index ) )
+        raise StepFailure( '"%s" combo should have an option with text of "%s"' % ( label, text ) )
+     
+
+def _contains_option_with_text( context, label, text ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    
+    _assert_is_visible( label )
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+    
+    script = """(function( comboId, value ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        var record = combo.findRecord( combo.displayField, value );
+        if( !record ){
+            return '';
+        }
+        return 'ok';
+    })( '%s', '%s' )""" % ( comboId, text )
+    
+    found = extasy.selenium.getDriver().exec_js( script )
+    return found
+     
+        
+@Given( 'I see "$label" combo contains an option with text of "$text"' )
+@When( 'I see "$label" combo contains an option with text of "$text"' )
+@Then( 'I see "$label" combo contains an option with text of "$text"' )        
+def contains_option_with_text( context, label, text ):
+    found = _contains_option_with_text( context, label, text )
+    
+    if not found:
+        raise StepFailure( '"%s" combo should have an option with text of "%s"' % ( label, text ) )
+        
+@Given( 'I see "$label" combo does not contain an option with text of "$text"' )
+@When( 'I see "$label" combo does not contain an option with text of "$text"' )
+@Then( 'I see "$label" combo does not contain an option with text of "$text"' )        
+def does_not_contain_option_with_text( context, label, text ):
+    found = _contains_option_with_text( context, label, text )
+    
+    if found:
+        raise StepFailure( '"%s" combo should not have an option with text of "%s"' % ( label, text ) )
+        
+def _contains_option_with_value( context, label, value ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    
+    _assert_is_visible( label )
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+    
+    script = """(function( comboId, value ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        var record = combo.findRecord( combo.valueField, value );
+        if( !record ){
+            return '';
+        }
+        return 'ok';
+    })( '%s', '%s' )""" % ( comboId, value )
+    
+    found = extasy.selenium.getDriver().exec_js( script )
+    return found
+        
+@Given( 'I see "$label" combo contains an option with value of "$value"' )
+@When( 'I see "$label" combo contains an option with value of "$value"' )
+@Then( 'I see "$label" combo contains an option with value of "$value"' )        
+def contains_option_with_value( context, label, value ):   
+    found = _contains_option_with_value( context, label, value )
+    
+    if not found:
+        raise StepFailure( '"%s" combo should have an option with value of "%s"' % ( label, value ) )
+        
+
+@Given( 'I see "$label" combo does not contain an option with value of "$value"' )
+@When( 'I see "$label" combo does not contain an option with value of "$value"' )
+@Then( 'I see "$label" combo does not contain an option with value of "$value"' )        
+def does_not_contain_option_with_value( context, label, value ):   
+    found = _contains_option_with_value( context, label, value )
+    
+    if found:
+        raise StepFailure( '"%s" combo should not have an option with value of "%s"' % ( label, value ) )
+        
+        
+def _has_selected_value( context, label, value ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    
+    _assert_is_visible( label )
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+    
+    script = """(function( comboId, value ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        if( !combo.getValue() ){
+            return '';
+        }
+        
+        var selectedValue = combo.findRecord( combo.valueField, combo.getValue() ).get( combo.valueField );
+        if( selectedValue != value ){
+            return '';
+        }
+        
+        return 'ok';
+    })( '%s', '%s' )""" % ( comboId, value )
+    
+    found = extasy.selenium.getDriver().exec_js( script )
+    return found
+   
+def _has_selected_text( context, label, text ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    
+    _assert_is_visible( label )
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+    
+    script = """(function( comboId, value ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        if( combo.selectedIndex == -1 ){
+            return '';
+        }
+        
+        var selectedValue = combo.findRecord( combo.valueField, combo.getValue() ).get( combo.displayField );
+        if( selectedValue != value ){
+            return '';
+        }
+        
+        return 'ok';
+    })( '%s', '%s' )""" % ( comboId, text )
+    
+    found = extasy.selenium.getDriver().exec_js( script )
+    return found
+   
+   
+@Given( 'I see "$label" combo has selected value of "$value"' )
+@When( 'I see "$label" combo has selected value of "$value"' )
+@Then( 'I see "$label" combo has selected value of "$value"' )
+def has_selected_value( context, label, value ):
+    found = _has_selected_value( context, label, value )
+    
+    if not found:
+        raise StepFailure( '"%s" combo should have selected value of "%s"' % ( label, value ) )
+        
+@Given( 'I see "$label" combo has selected text of "$text"' )
+@When( 'I see "$label" combo has selected text of "$text"' )
+@Then( 'I see "$label" combo has selected text of "$text"' )
+def has_selected_text( context, label, text ):
+    found = _has_selected_text( context, label, text )
+    
+    if not found:
+        raise StepFailure( '"%s" combo should have selected text of "%s"' % ( label, text ) )
+        
+        
+@Given( 'I see "$label" combo does not have a selected option' )
+@When( 'I see "$label" combo does not have a selected option' )
+@Then( 'I see "$label" combo does not have a selected option' )
+def does_not_have_selected_option( context, label ):
+    combo_xpath = 'xpath=' + _get_xpath( label )
+    
+    _assert_is_visible( label )
+    comboId = extasy.selenium.getDriver().get_element_id( combo_xpath )
+    
+    script = """(function( comboId ){
+        var combo = selenium.browserbot.getCurrentWindow().Ext.getCmp( comboId );
+        if( combo.getValue() ){
+            return '';
+        }
+        return 'ok';
+    })( '%s' )""" % ( comboId )
+    
+    found = extasy.selenium.getDriver().exec_js( script )
+    
+    if not found:
+        raise StepFailure( '"%s" combo should not have a selected option' % ( label ) )

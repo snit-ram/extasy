@@ -14,7 +14,7 @@ def extasy__run_step(self, extasy_step, step_name):
     extasy.scope.quit_to_indentation_level( self.indentation_level )
     
     method, message_template, args = step
-    message = re.sub( r'\$([a-zA-Z]\w+)', '%(\1)s', message_template.replace( '%', '%%' ) ) % args
+    message = re.sub( r'\$([a-zA-Z]\w+)', r'%(\1)s', message_template.replace( '%', '%%' ) ) % args
     if hasattr(method, 'pending'):
         self._pendings.append(method)
         self._output_writer.output_pending_step_line(step_name,

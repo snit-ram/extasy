@@ -96,4 +96,11 @@ lang = {
     'I select the option with value of "$value" in "$label" combo' : 'Eu seleciono a opção de valor "$value" no combo "$label"',
     'I select the option with index of $index in "$label" combo' : 'Eu seleciono a opção de índice $index no combo "$label"',
     'I select the option with text of "$text" in "$label" combo' : 'Eu seleciono a opção de texto "$text" no combo "$label"',
+    'I see "$label" combo contains an option with text of "$text"' : 'Eu vejo que o combo "$label" contém uma opção com o texto "$text"',
+    'I see "$label" combo contains an option with value of "$value"' : 'Eu vejo que o combo "$label" contém uma opção com o valor "$value"',
+    'I see "$label" combo does not contain an option with text of "$text"' : 'Eu vejo que o combo "$label" não contém uma opção com o texto "$text"',
+    'I see "$label" combo does not contain an option with value of "$value"' : 'Eu vejo que o combo "$label" não contém uma opção com o valor "$value"',
+    'I see "$label" combo has selected value of "$value"' : 'Eu vejo que o valor "$value" está selecionado no combo "$label"',
+    'I see "$label" combo has selected text of "$text"' : 'Eu vejo que o texto "$text" está selecionado no combo "$label"',
+    'I see "$label" combo does not have a selected option' : 'Eu vejo que o combo "$label" não tem uma opção selecionada',
 }
