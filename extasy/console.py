@@ -105,17 +105,20 @@ def main():
     for arg in args:
         files.append(arg)
         stories_dirname = os.path.dirname(arg) or '.'
+        extasy.settings.set( '_stories_dir', stories_dirname )
     
     try:
         if values.stories_dir:
             files.extend([values.stories_dir+'/'+filename for filename in os.listdir(values.stories_dir)
                             if filename.endswith('.story')])
             stories_dirname = values.stories_dir
+            extasy.settings.set( '_stories_dir', stories_dirname )
         elif files == []:
             files.extend([stories_dirname+'/'+filename for filename in os.listdir(stories_dirname)
                                               if filename.endswith('.story')])
 
         steps_modules = extasy_find_steps_modules(values.steps_dir or stories_dirname+'/step_definitions')
+        extasy.runner._steps_modules = steps_modules
     except OSError, e:
         pass
 
@@ -148,6 +151,8 @@ def main():
                                          before_each=before_each_methods,
                                          after_all=after_all_methods,
                                          after_each=after_each_methods)
+        
+        story_runner._story_file = story
         
         story_status = story_runner.run()
         exit_code = exit_code and story_status

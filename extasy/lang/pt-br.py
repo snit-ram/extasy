@@ -103,4 +103,7 @@ lang = {
     'I see "$label" combo has selected value of "$value"' : 'Eu vejo que o valor "$value" está selecionado no combo "$label"',
     'I see "$label" combo has selected text of "$text"' : 'Eu vejo que o texto "$text" está selecionado no combo "$label"',
     'I see "$label" combo does not have a selected option' : 'Eu vejo que o combo "$label" não tem uma opção selecionada',
+    
+    #scenario
+    'I run "$title" scenario of "$story" story' : 'Eu rodo o cenário "$title" da história "$story"',
 }

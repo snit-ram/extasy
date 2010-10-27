@@ -26,6 +26,9 @@ class _Settings( object ):
             
         return default
         
+    def set( self, att, value = None ):
+        self.settings[ att ] = value
+        
         
 settings = _Settings()
 

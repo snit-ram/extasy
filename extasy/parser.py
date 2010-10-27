@@ -9,11 +9,14 @@ story_parser.RegexInternationalized._all_regexes[ 'en-us' ][ 'given_regex' ] = '
 story_parser.RegexInternationalized._all_regexes[ 'en-us' ][ 'when_regex' ] = 'When:'
 story_parser.RegexInternationalized._all_regexes[ 'en-us' ][ 'then_regex' ] = 'Then:'
 story_parser.RegexInternationalized._all_regexes[ 'en-us' ][ 'no_and_regex' ] = '(.+)'
+story_parser.RegexInternationalized._all_regexes[ 'en-us' ][ 'scenario_regex' ] = r'Scenario(?: (\d+))?: (.+)'
+
 
 story_parser.RegexInternationalized._all_regexes[ 'pt-br' ][ 'given_regex' ] = 'Dado que:'
 story_parser.RegexInternationalized._all_regexes[ 'pt-br' ][ 'when_regex' ] = 'Quando:'
 story_parser.RegexInternationalized._all_regexes[ 'pt-br' ][ 'then_regex' ] = 'Então:'
 story_parser.RegexInternationalized._all_regexes[ 'pt-br' ][ 'no_and_regex' ] = '(.+)'
+story_parser.RegexInternationalized._all_regexes[ 'pt-br' ][ 'scenario_regex' ] = r'Cenário(?: (\d+))?: (.+)'
 
 def get_indentation_level( line ):
     match = re.match( '^([\s\t]*)', line )
@@ -96,7 +99,7 @@ def extasy_parse_scenarios(self, lines):
                 pass
             else:
                 steps[step_name].append( ( step_line.group(1), intendation_level ) )
-        scenarios.append((scenario_title.group(1), steps))
+        scenarios.append((scenario_title.group(2), steps, scenario_title.group(1)))
     return scenarios
 
 story_parser.StoriesParser._remove_blank_lines = extasy__remove_blank_lines
