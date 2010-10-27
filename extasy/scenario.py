@@ -21,18 +21,24 @@ def extasy__run_step(self, extasy_step, step_name):
                                                      message,
                                                      self._pending_color)
         return
-    try:
+    try:        
+        self._output_writer._stream.write( self._output_writer._colored( '    %s %s   ...' % ( self._language[step_name].capitalize(), message), 'white' ) )
+        
         method(self, **args)
+        
+        self._output_writer._stream.write( self._output_writer._colored( '\r', 'white' ) )
         self._output_writer.output_ok_step_line(step_name,
                                                 message,
                                                 'green')
     except AssertionError, e:
         self._failures.append(self._get_traceback_info())
+        self._output_writer._stream.write( self._output_writer._colored( '\r', 'white' ) )
         self._output_writer.output_fail_step_line(step_name,
                                                  message,
                                                  self._failure_color)
     except Exception, e:
         self._errors.append(self._get_traceback_info())
+        self._output_writer._stream.write( self._output_writer._colored( '\r', 'white' ) )
         self._output_writer.output_error_step_line(step_name,
                                                    message,
                                                    self._error_color)
