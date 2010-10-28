@@ -13,6 +13,9 @@ from finder import (extasy_find_steps_modules,
 import pyhistorian
 from pyhistorian.output import colored
 import sys
+from unicodedata import normalize
+import locale
+import codecs
 
 def _extasy_story_colored(self, msg, color):
     if not isinstance( msg, unicode):
@@ -43,7 +46,7 @@ def _extasy_outputwriter_colored(self, msg, color):
     
 import os
 if 'windows' in os.environ.get( 'OS', '' ).lower(): 
-    import ctypes, sys
+    import ctypes
     def set_terminal_color(color):
         colors = [ 'black', 'blue', 'green', 'aqua', 'red', 'purple', 'yellow', 'white', 'gray', 'light blue', 'light green', 'light aqua', 'light red', 'light purple', 'light yellow' ]
         std_out_handle = ctypes.windll.kernel32.GetStdHandle(-11)
@@ -68,9 +71,10 @@ pyhistorian.story.Story._colored = _extasy_story_colored
 from pycukes.runner import StoryRunner
 
 from optparse import OptionParser
-import sys
 import os
 import extasy
+from subcommand_optparser import *
+import re
 
 def extasy_console(stories_dir, steps_dir, output, colored=False, settings = None):
     modules = extasy_find_steps_modules(steps_dir)
@@ -80,27 +84,75 @@ def extasy_console(stories_dir, steps_dir, output, colored=False, settings = Non
         StoryRunner(spec, output, colored=colored, modules=modules).run()
     extasy.selenium.getDriver().stop_test()
 
-def main():
+    
+stories_dirname = '.'
+
+    
+def main():   
+    create_cmd = Subcommand( 'create', optparse.OptionParser(usage='%prog [OPTIONS] "Story title"...' ), 'creates a new .story file' )
+    run_cmd = Subcommand( 'run', optparse.OptionParser(usage='%prog [OPTIONS] [Story_file]...' ), 'runs stories' )
+
+    parser = SubcommandsOptionParser(
+        subcommands = ( create_cmd, run_cmd )
+    )
+    
+    parser.add_option( '-s', '--stories-dir', default=None, dest='stories_dir' )
+    parser.add_option('-l', '--language', default='en-us', dest='language')
+    
+    run_cmd.parser.add_option('-t', '--steps-dir', default=None, dest='steps_dir')
+    run_cmd.parser.add_option('-n', '--no-colors', default=None, action='store_true', dest='no_colors')
+    run_cmd.parser.add_option('', '--selenium-server', default='localhost', dest='selenium-server')
+    run_cmd.parser.add_option('', '--selenium-port', default='4444', dest='selenium-port')
+    run_cmd.parser.add_option('', '--browser', default='firefox', dest='browser')
+    run_cmd.parser.add_option('', '--base-url', default=None, dest='base-url')
+    
+    
+    options, subcommand, suboptions, subargs = parser.parse_args()
+    
+    for x in dir( options ):
+        if not x.startswith( '_' ):
+            if x not in dir( suboptions ):
+                setattr( suboptions, x, getattr( options, x ) )
+                
+    extasy.settings.setValues( suboptions )
+    
+    if subcommand is create_cmd:
+        extasy_create_command( subargs, suboptions )
+        
+    elif subcommand is run_cmd:
+        extasy_run_command( subargs, suboptions )
+    
+
+    
+def extasy_create_command( args, options ):
+    stories_dirname = extasy.settings.get( 'stories_dir', '.' )
+    numberedFileRe = re.compile( r'^(\d)+' )
+    path = os.path.dirname( __file__ )
+    
+    templatePath = '%s/lang/%s-template.story' % ( path, extasy.settings.get( 'language', 'en-us' ) )
+    template = codecs.open( templatePath, encoding='utf-8' ).read()
+    
+    for storyTitle in args:
+        storyTitle = storyTitle.decode( locale.getdefaultlocale()[1] )
+        fileName = re.sub( '\W+', '_', normalize( 'NFKD', storyTitle ).encode( 'ASCII', 'ignore' ) ) + '.story'
+        filePath = '%s/%s' % ( stories_dirname, fileName )
+        
+        if os.path.exists( fileName ):
+            print 'Story file "%s" already exists' % fileName
+            continue
+            
+        f = codecs.open( filePath, 'w', encoding='utf-8' )
+        f.write( template % { 'title' : storyTitle } )
+        f.close()
+
+    
+def extasy_run_command( args, values ):
     steps_modules = []
     files = []
     before_all_methods = []
     before_each_methods = []
     after_all_methods = []
     after_each_methods = []
-    stories_dirname = 'stories'
-
-    parser = OptionParser()
-    parser.add_option('-s', '--stories-dir', default=None, dest='stories_dir')
-    parser.add_option('-t', '--steps-dir', default=None, dest='steps_dir')
-    parser.add_option('-n', '--no-colors', default=None, action='store_true', dest='no_colors')
-    parser.add_option('-l', '--language', default='en-us', dest='language')
-    parser.add_option('', '--selenium-server', default='localhost', dest='selenium-server')
-    parser.add_option('', '--selenium-port', default='4444', dest='selenium-port')
-    parser.add_option('', '--browser', default='firefox', dest='browser')
-    parser.add_option('', '--base-url', default=None, dest='base-url')
-    values, args = parser.parse_args()
-    
-    extasy.settings.setValues( values )
 
     for arg in args:
         files.append(arg)
