@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
-Version = "0.9.2"
+Version = "0.9.3"
 Release = "Sunrise"
 DEFAULT_WAIT_FOR_PAGE_TIMEOUT = 30
 DEFAULT_WAIT_FOR_PRESENCE_TIMEOUT = 10

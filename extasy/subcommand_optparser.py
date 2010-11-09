@@ -76,7 +76,7 @@ class SubcommandsOptionParser(optparse.OptionParser):
                     (self.get_prog_name(), subcommand.name)
         
         # Our root parser needs to stop on the first unrecognized argument.  
-        #self.disable_interspersed_args()
+        self.disable_interspersed_args()
         
     #def add_option( self, *args, **kwargs ):
     #    for x in self.subcommands:
