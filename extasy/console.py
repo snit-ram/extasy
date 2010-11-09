@@ -28,7 +28,7 @@ def _extasy_story_colored(self, msg, color):
     
     if self.colored == False:
         return msg
-    return colored(msg, color)
+    return colored( msg, color, _pyhistorian_story_colored, self )
 
 def _extasy_outputwriter_colored(self, msg, color):
     if not isinstance( msg, unicode):
@@ -40,7 +40,7 @@ def _extasy_outputwriter_colored(self, msg, color):
         set_terminal_color( 'white' )
     
     if self._should_be_colored:
-        return colored(msg, color)
+        return colored(msg, color, _pyhistorian_output_colored, self )
         
     return msg
     
@@ -54,19 +54,21 @@ if 'windows' in os.environ.get( 'OS', '' ).lower():
     
 
 import termcolor
-def colored(msg, color):
+def colored(msg, color, method = None, instance = None):
     if color == 'term':
         return msg
         
     if 'windows' in os.environ.get( 'OS', '' ).lower():
         set_terminal_color( color.lower() )
-        
-    return msg
+        return msg
     
+    return method( instance, msg, color )
+    
+_pyhistorian_output_colored = pyhistorian.output.OutputWriter._colored
+_pyhistorian_story_colored = pyhistorian.story.Story._colored
     
 pyhistorian.output.OutputWriter._colored = _extasy_outputwriter_colored
 pyhistorian.story.Story._colored = _extasy_story_colored
-
                     
 from pycukes.runner import StoryRunner
 

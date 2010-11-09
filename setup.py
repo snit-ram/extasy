@@ -20,12 +20,12 @@
 
 
 from setuptools import setup, find_packages
-from src import Version
 README = open('README.rst').read()
+import extasy
 
 setup(
     name = 'extasy',
-    version = Version,
+    version = extasy.Version,
     description = "EXTasy is a BDD framework bult on top of PyCukes for ExtJS interfaces",
     long_description=README,
     keywords = 'bdd behaviour behavior pyhistorian story',
@@ -53,16 +53,20 @@ setup(
         'extasy.step_definitions',
     ],
     package_dir = {
-        'extasy': 'extasy'
+        'extasy': 'extasy',
         'extasy.lang': 'extasy/lang',
         'extasy.selenium': 'extasy/selenium',
         'extasy.step_definitions': 'extasy/step_definitions',
+    },
+    package_data = {
+        'extasy.lang': ['*.story']
     },
 
     zip_safe=False,
     install_requires=[
         'story_parser>=0.1.2',
         'should_dsl',
+        'termcolor',
         'pyhistorian>=0.6.8',
         'pycukes',
         'selenium'
