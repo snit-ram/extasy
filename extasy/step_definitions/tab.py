@@ -44,7 +44,35 @@ def _wait_for_presence( context, title, timeout = None ):
     if not extasy.selenium.getDriver().wait_for_element_present(xpath, timeout):
         message = '"%s" tab should appear in %s seconds' % ( title, timeout )
         raise StepFailure( message )
+        
 
+@Given( 'I wait for "$title" tab to disappear' )
+@When( 'I wait for "$title" tab to disappear' )
+@Then( '"$title" tab should disappear' )
+def wait_to_disappear( context, title, timeout = None ):
+    xpath = 'xpath=%s' % _getxpath( title = title )
+    
+    if not extasy.selenium.getDriver().is_element_visible( xpath ):
+        message = '"%s" tab should exists and be visible' % ( title )
+        raise StepFailure( message )
+
+    if not timeout:
+        timeout = extasy.DEFAULT_WAIT_FOR_PRESENCE_TIMEOUT
+    timeout = int( timeout )
+
+    if not extasy.selenium.getDriver().wait_for_element_to_disappear(xpath, timeout):
+        message = '"%s" tab should disappear in %s seconds' % ( title, timeout )
+        raise StepFailure( message )
+        
+
+    
+@Given( '"$title" tab is present' )
+def is_present( context, title ):
+    xpath = 'xpath=%s' % _getxpath( title = title )
+    
+    if not extasy.selenium.getDriver().is_element_visible( xpath ):
+        message = '"%s" tab should exists and be visible' % ( title )
+        raise StepFailure( message )
     
 
 
@@ -81,16 +109,11 @@ def close( context, title ):
 
     extasy.selenium.getDriver().click_element(xpath)
 
-    
-@Given( 'I wait for "$title" tab to be present' )
-@When( 'I wait for "$title" tab to be present' )
-@Then( 'I wait for "$title" tab to be present' )
-def wait_for_presence( context, title ):
-    return _wait_for_presence( context, title )
-        
 
-@Given( 'I wait for "$title" tab to be present for $timout seconds' )
-@When( 'I wait for "$title" tab to be present for $timout seconds' )
-@Then( 'I wait for "$title" tab to be present for $timout seconds' )
+@Given( 'I wait for "$title" tab to be present', 'I wait for "$title" tab to be present for $timout seconds' )
+@When( 'I wait for "$title" tab to be present', 'I wait for "$title" tab to be present for $timout seconds' )
+@Then( 'I wait for "$title" tab to be present', 'I wait for "$title" tab to be present for $timout seconds', 'Tab "$title" should be present' )
 def wait_for_presence_timeout( context, title, timeout = None ):
     return _wait_for_presence( context, title, timeout )
+
+    

@@ -52,6 +52,10 @@ lang = {
     'I wait for "$title" tab to be present for $timeout seconds' : 'Eu espero a aba "$title" aparecer por $timeout segundos',
     'I close "$title" tab' : 'Eu fecho a aba "$title"',
     'In "$title" tab:' : 'Na aba "$title":',
+    'Tab "$title" should be present' : 'A aba "$title" deve aparecer',
+    '"$title" tab is present' : 'A aba "$title" está aberta',
+    'I wait for "$title" tab to disappear' : 'Eu espero a aba "$title" desaparecer',
+    '"$title" tab should disappear' : 'A aba "$title" deve desaparecer',
     
     #window
     'I wait for window to be present' : 'Eu espero a janela aparecer',

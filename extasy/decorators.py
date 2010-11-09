@@ -8,19 +8,31 @@ _extasy_hooks = {
     'EndTest' : [],
 }
 
-def extasy_decorator__init__(self, message, *args):
-    self._message = extasy.lang.get( message )
-    self._args = args
+def extasy_decorator__init__(self, *args):
+    self._messages = [ extasy.lang.get( message ) for message in args ]
+    self._args = ()
     self._context = sys._getframe(1)
     self._set_step_attrs(self._context.f_locals)
     step = self.__class__.name
     self._steps = self._context.f_locals['_%ss' % step]
-    self._steps.append((None, self._message, self._args))
+    
+    for message in self._messages:
+        self._steps.append((None, message, self._args))
 
+def extasy_decorator__call__(self, method=None):
+    for message in self._messages:
+        del self._steps[-1]
+        
+    for message in self._messages:
+        self._steps.append((method, message, self._args))
+        
+    return method
 
-Given = type( 'Given', (pycukes.Given,), { '__init__' : extasy_decorator__init__ } )
-When = type( 'When', (pycukes.When,), { '__init__' : extasy_decorator__init__ } )
-Then = type( 'Then', (pycukes.Then,), { '__init__' : extasy_decorator__init__ } )
+    
+
+Given = type( 'Given', (pycukes.Given,), { '__init__' : extasy_decorator__init__, '__call__' : extasy_decorator__call__ } )
+When = type( 'When', (pycukes.When,), { '__init__' : extasy_decorator__init__, '__call__' : extasy_decorator__call__ } )
+Then = type( 'Then', (pycukes.Then,), { '__init__' : extasy_decorator__init__, '__call__' : extasy_decorator__call__ } )
 
 def StartTest( f ):
     global _extasy_hooks

@@ -84,7 +84,7 @@ def extasy_run( self, scenarios = None ):
             scenarios.append( self._parsed_story.get_stories()[0].scenarios[ index ] )
     else:
         scenarios = self._parsed_story.get_stories()[0].scenarios
-        
+    
     for scenario_title, steps, scenario_number in scenarios:
         new_scenario = type('EXTasyScenario',
                             (Scenario,),
@@ -103,6 +103,7 @@ def extasy_run( self, scenarios = None ):
                 scenario_steps = getattr(new_scenario, '_%ss' % step_name)
                 extasy_scenario_steps = getattr(new_scenario, '_extasy_%ss' % step_name)
                 all_runner_steps = getattr(self, '_all_%ss' % step_name)
+                                    
                 actual_scenario = (None, step_message, ())
                 extasy_actual_scenario = (None, step_message, (), indentation_level)
                 for step_regex, (step_method, step_args) in all_runner_steps.items():
@@ -112,14 +113,16 @@ def extasy_run( self, scenarios = None ):
                     msg_pattern = re.sub( r'\\\(\\\?P\\\<(.*?)\\\>\\\[\\\^\\\"\\\]\\\*\\\?\\\)', r'(?P<\1>[^"]*?)', msg_pattern )
                     
                     if re.match(msg_pattern, step_message, re.IGNORECASE ):
+                        params = re.match(msg_pattern, step_message, re.IGNORECASE).groupdict()
+                        for x in params:
+                            params[ x ] = params[ x ].decode( 'utf-8' )
+                            
                         actual_scenario = (step_method,
                                            step_message,
-                                           re.match(msg_pattern,
-                                                    step_message, re.IGNORECASE).groupdict() )
+                                           params )
                         extasy_actual_scenario = (step_method,
                                            step_message,
-                                           re.match(msg_pattern,
-                                                    step_message, re.IGNORECASE).groupdict(), indentation_level )
+                                           params, indentation_level )
                 scenario_steps.append( actual_scenario )
                 extasy_scenario_steps.append( extasy_actual_scenario )
 

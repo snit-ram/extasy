@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
 import extasy
 import extasy.selenium
 from extasy import *
@@ -52,7 +55,7 @@ def node_click( context, title ):
 @Then( 'I open "$title" tree node' )
 def node_open( context, title ):
     xpath = 'xpath=%s' % _get_node_open_button_xpath( title = title )
-
+    
     if not extasy.selenium.getDriver().is_element_visible( xpath ):
         message = '"%s" tree node should exists, be a folder and be closed' % ( title )
         raise StepFailure( message )
