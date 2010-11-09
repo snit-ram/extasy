@@ -51,10 +51,6 @@ def _wait_for_presence( context, title, timeout = None ):
 @Then( '"$title" tab should disappear' )
 def wait_to_disappear( context, title, timeout = None ):
     xpath = 'xpath=%s' % _getxpath( title = title )
-    
-    if not extasy.selenium.getDriver().is_element_visible( xpath ):
-        message = '"%s" tab should exists and be visible' % ( title )
-        raise StepFailure( message )
 
     if not timeout:
         timeout = extasy.DEFAULT_WAIT_FOR_PRESENCE_TIMEOUT
