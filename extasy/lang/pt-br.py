@@ -80,6 +80,10 @@ lang = {
     'I click on $line line of "$title" grid' : 'Eu clico na $line linha do grid "$title"',
     'I doubleclick $line line of grid' : 'Eu dou um duplo clique na $line linha do grid',
     'I doubleclick $line line of "$title" grid' : 'Eu dou um duplo clique na $line linha do grid "$title"',
+    'grid lines should appear' : 'devem aparecer linhas no grid',
+    'grid lines should appear in $timeout seconds' : 'devem aparecer linhas no grid em $timeout segundos',
+    '"$title" grid lines should appear' : 'devem aparecer linhas no grid em $timeout seconds',
+    '"$title" grid lines should appear in $timeout seconds' : 'devem aparecer linhas no grid em $timeout seconds',
 
     #line accessors
     'first' : 'primeira',
