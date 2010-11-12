@@ -23,22 +23,23 @@ def see_title( context, title = None ):
     
 @Given( 'I see that current page contains "$markup"' )
 @When( 'I see that current page contains "$markup"' )
-@Then( 'I see that current page contains "$markup"' )
+@Then( 'I see that current page contains "$markup"', 'Page should contain "$markup"' )
 def contains_markup( context, markup = None ):
-    page_html = extasy.selenium.getDriver().get_html_source()
+    page_html = extasy.selenium.getDriver().get_body_source()
+    
     assert markup in page_html, 'Page should contain "%(markup)s", but it does\'t' %  {
         'markup' : markup
     }
 
 @Given( 'I see that current page does not contain "$markup"' )
 @When( 'I see that current page does not contain "$markup"' )
-@Then( 'I see that current page does not contain "$markup"' )
+@Then( 'I see that current page does not contain "$markup"', 'Page should not contain "$markup"' )
 def does_not_contain_markup( context, markup = None ):
-    page_html = extasy.selenium.getDriver().get_html_source()
+    page_html = extasy.selenium.getDriver().get_body_source()
+    
     assert markup not in page_html, 'Page should not contain "%(markup)s", but it does' %  {
         'markup' : markup
     }
-    
 
 
 @Given( 'I wait for the page to load for $timeout seconds' )

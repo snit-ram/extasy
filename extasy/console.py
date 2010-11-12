@@ -149,6 +149,7 @@ def extasy_create_command( args, options ):
 
     
 def extasy_run_command( args, values ):
+    stories_dirname = extasy.settings.get( 'stories_dir', '.' )
     steps_modules = []
     files = []
     before_all_methods = []

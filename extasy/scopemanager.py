@@ -9,12 +9,18 @@ class _Scope( object ):
             return ''
         
         return self.stack[ -1 ][ 1 ]
+        
+    def get_scope_info( self ):
+        if not self.stack:
+            return None
+        
+        return self.stack[ -1 ][ 2 ]
 
-    def enter( self, scope_xpath, indentation_level ):
+    def enter( self, scope_xpath, indentation_level, scope_info = None ):
         if self.stack and self.stack[ -1 ] == indentation_level:
             return
 
-        self.stack.append( ( indentation_level, scope_xpath, ) )
+        self.stack.append( ( indentation_level, scope_xpath, scope_info ) )
 
     def quit_to_indentation_level( self, indentation_level ):
         i = 0

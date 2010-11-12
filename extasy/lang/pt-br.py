@@ -5,7 +5,9 @@ lang = {
     'I go to page "$url"' : 'eu navego para "$url"',
     'I see "$title" title' : 'eu vejo o título "$title"',
     'I see that current page contains "$markup"' : 'eu vejo que a página contém "$markup"',
+    'Page should contain "$markup"' : 'a página deve conter "$markup"',
     'I see that current page does not contain "$markup"' : 'eu vejo que a página não contém "$markup"',
+    'Page should not contain "$markup"' : 'a página não deve conter "$markup"',
     'I wait for the page to load' : 'eu espero a página carregar',
     'I wait for the page to load for $timeout seconds' : 'eu espero a página carregar por $timeout segundos',
     'I wait for $timeout seconds' : 'eu espero por $timeout segundos',
@@ -38,6 +40,11 @@ lang = {
     'I wait for "$title" menu item to be present' : 'Eu espero o item de menu "$title" aparecer',
     'I wait for "$title" menu item to be present for $timeout seconds' : 'Eu espero o item de menu "$title" aparecer por $timeout segundos',
     'I mouseover "$title" menu item' : 'Eu passo o mouse no item de menu "$title"',
+    
+    #filter menu
+    'I type "$value" in "$title" filter menu' : 'Eu digito "$value" no menu de filtro "$title"',
+    'I wait for "$title" filter menu to be present' : 'Eu espero o menu de filtro "$title" aparecer',
+    'I wait for "$title" filter menu to be present for $timeout seconds' : 'Eu espero o menu de filtro "$title" aparecer por $timeout seconds',
 
     #tree
     'I click on "$title" tree node' : 'Eu clico no nó de árvore "$title"',
@@ -84,6 +91,12 @@ lang = {
     'grid lines should appear in $timeout seconds' : 'devem aparecer linhas no grid em $timeout segundos',
     '"$title" grid lines should appear' : 'devem aparecer linhas no grid em $timeout seconds',
     '"$title" grid lines should appear in $timeout seconds' : 'devem aparecer linhas no grid em $timeout seconds',
+    'In $line line of grid:' : 'na $line linha do grid:', 
+    'In $line line of "$title" grid:': 'na $line linha do grid "$title":',
+    'I see "$column" column has a text of "$value"' : 'eu vejo o texto "$value" na coluna "$column"',
+    '"$column" column should have a text of "$value"' : 'deve aparecer o texto "$value" na coluna "$column"',
+    'I open "$column" config menu of grid' : 'Eu abro as configurações da coluna "$column" do grid',
+    'I open "$column" config menu of "$title" grid' : 'Eu abro as configurações da coluna "$column" do grid "$title"',
 
     #line accessors
     'first' : 'primeira',

@@ -9,7 +9,7 @@ import re
 import extasy.selenium
 import extasy
 import StringIO
-import os
+import os, sys
 
 _steps_modules = []
 
@@ -61,6 +61,9 @@ def run_story_scenario( storyfile, scenario = None, before_all_methods = None, a
     story_runner._story_file = storyfile
     
     story_status = story_runner.run( scenarios = [ scenario ] )
+    
+    if not story_status:
+        print story_output.read()
     return story_status
 
 
@@ -70,10 +73,15 @@ def extasy_run( self, scenarios = None ):
     SCENARIO_NAME = 0
     SCENARIO_NUMBER = 2
     
+    
     if _scenarios_to_run:
         titles, steps, numbers = zip(*self._parsed_story.get_stories()[0].scenarios)
+        titles = [ x.decode( 'utf8' ) for x in titles ]
+        
         scenarios = []
         for _scenario_to_run in _scenarios_to_run:
+            _scenario_to_run = _scenario_to_run.decode( sys.stdin.encoding )
+            
             if _scenario_to_run in titles:
                 index = titles.index( _scenario_to_run )
             elif _scenario_to_run in numbers:

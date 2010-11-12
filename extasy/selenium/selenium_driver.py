@@ -243,6 +243,12 @@ class SeleniumDriver(object):
 
     def get_html_source(self):
         return self.selenium.get_html_source()
+        
+    def get_body_source(self):
+        script = """(function(){
+            return selenium.browserbot.getCurrentWindow().document.body.innerHTML;
+        })()"""
+        return self.exec_js( script )
 
     def get_class(self, name):
         klass = self.__get_attribute_value(name, 'class')

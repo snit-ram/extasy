@@ -90,7 +90,7 @@ def click( context, title ):
         message = '"%s" tab should exists and be visible' % ( title )
         raise StepFailure( message )
     
-    extasy.selenium.getDriver().click_element(xpath)
+    extasy.selenium.getDriver().click_element_at(xpath, 5, 5)
 
 
 @Given( 'I close "$title" tab' )
